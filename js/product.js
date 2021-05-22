@@ -1,12 +1,16 @@
 $(document).ready(function () {
 
     loadProduct();
+    var id;
+    currentRow = null;
 
     $("#ProductForm").click(function () {
         $('#info')[0].reset();
         $('#newProduct').modal('show');
+        $('#operation').val('add');
         console.log("alo")
     });
+
 
     $('#save').click(function () {
         var formData = new FormData();
@@ -17,35 +21,75 @@ $(document).ready(function () {
         product.brand = $("#brand").val();;
         product.madein = $("#madein").val();
         product.price = parseFloat($("#price").val());
+        product.imageURL =  $("#imageURL").val();
+        product.description = $("#description").val();
 
         console.log(JSON.stringify(product));
 
-        for (i = 0; i < 5; i++) {
-            formData.append("name", product.name + i);
-            formData.append("brand", product.brand + i);
-            formData.append("price", product.price + i);
-            formData.append("madein", product.madein + i);
-        }
-
+        formData.append("name", product.name);
+        formData.append("brand", product.brand);
+        formData.append("price", product.price);
+        formData.append("madein", product.madein);
+        formData.append("description", product.description);
         if ($('#image')[0].files[0] != null)
             formData.append("image", $('#image')[0].files[0]);
         else
             formData.append("image", null);
-        console.log(formData.get("product"));
-        console.log(formData.get("image"));
-        console.log(formData);
-        $.ajax({
-            url: "http://localhost:8080/api/product",
-            method: 'POST',
-            data: formData,
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            success: function (data) {
+        var url = "http://localhost:8080/product"
+        if($('operation').val() == 'add'){
+            $.ajax({
+                url: "http://localhost:8080/product",
+                method: 'POST',
+                data: formData,
+                headers: {
+                    "Authorization": localStorage.getItem('token')
+                },
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    addRowToTable(data);
+                },
+                error: function () {
+                    alert("eror");
+                },
+                complete: function () {
+                    $('#newProduct').modal('hide');
+                }
+            })
+        }
+        else{
+            formData.append("imageURL", product.imageURL);
+            $.ajax({
+                url: "http://localhost:8080/product/" + id,
+                method: 'PUT',
+                data: formData,
+                headers: {
+                    "Authorization": localStorage.getItem('token')
+                },
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    alert("update successfully");
+                    // $("#table_data tr").remove();
+                    // loadProduct();
+                    console.log(JSON.stringify(data));
+                    var new_row = productsAdd(data)
+                    console.log(new_row);
+                    console.log(currentRow);
+                    currentRow.replaceWith(new_row);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("eror " + jqXHR.status);
+                },
+                complete: function () {
+                    $('#newProduct').modal('hide');
+                }
+            })
+        }
 
-                alert(data);
-            }
-        })
+
     })
 
     function loadProduct() {
@@ -87,11 +131,12 @@ $(document).ready(function () {
     }
 
     $(document).on('click', '.edit_product', function () {
-        var id = $(this).attr("value");
+        id  = $(this).attr("value");
+        currentRow = $(this).parents('tr');
         loadOneProduct(id);
     });
 
-    function loadOneProduct(id){
+    function loadOneProduct(id) {
         $.ajax({
             url: "http://localhost:8080/product/" + id,
             method: 'GET',
@@ -101,8 +146,19 @@ $(document).ready(function () {
             },
             success: function (data) {
                 console.log(data);
-                
+                $('#operation').val('update');
+                $('#newProduct').modal('show');
+                console.log("123");
+                $("#name").val(data.name);
+                $("#brand").val(data.brand);
+                $("#madein").val(data.madein);
+                $("#price").val(data.price);
+                $("#description").val(data.description);
+                $("#imageURL").val(data.imageURL);
+               
             }
         });
     }
+
+    
 });

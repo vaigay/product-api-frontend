@@ -49,9 +49,8 @@
                     data: JSON.stringify(user),
                     contentType: "application/json",
                     success: function (data) {
-                        alert(data);
                         localStorage.setItem('token',"Bearer " + data );
-                        window.location.href = "index.html";
+                        window.location.href = "product.html";
                     },
                     error: function(){
                         alert("sai tài khoản hoặc mật khẩu");

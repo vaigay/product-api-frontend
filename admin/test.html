@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Product Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <form class="form-horizontal" role="form" id="chargesForm">
+        <div class="col-md-6">
+            <div class="form-group ">
+                <label for="minAmt" class="col-lg-4 control-label">MinAmmount</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" id="minAmt" name="minAmt" />
+                </div>
+            </div>
+            <div class="form-group ">
+                <label for="maxAmt" class="col-lg-4 control-label">MaxAmmount</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" id="maxAmt" name="maxAmt" />
+                </div>
+            </div>
+    
+        </div>
+        <div class="col-md-6">
+            <div class="form-group ">
+                <label for="type" class="col-lg-4 control-label">Type</label>
+                <select size="1" id="type" name="type">
+                    <option value="Flat" selected="selected">
+                        Flat
+                    </option>
+                    <option value="Percentage">
+                        Percentage
+                    </option>
+                </select>
+            </div>
+    
+        </div>
+    
+        <div class="col-md-12">
+            <div class="form-actions btnzone">
+                <button type="button" class="btn btn-success savebtn" style="padding: 6px 12px;margin-left: 40%;"
+                    id="savebutton"><i class="icon-check-sign" aria-hidden="false"></i>Add</button>
+                <a class="btn btn-danger"><i class=""></i>Back</a>
+    
+            </div>
+        </div>
+    </form>
+    <form class="form-horizontal" role="form" id="chargestableForm">
+        <div class="col-md-12" style="height:150px;overflow:auto;margin-top:5px;">
+            <table id="charges" class="table table-hover" width="100%" cellspacing="0" style="border: 1px; height:10px;">
+                <thead style="background-color:#CCE5FF">
+                    <tr>
+                        <th>MinAmmount</th>
+                        <th>MaxAmmount</th>
+                        <th>Type</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <script>
+        var i = 0;
+        currentRow = null;
+        $("button#savebutton").click(function () {
+            var minAmt = $("#minAmt").val();
+            var maxAmt = $("#maxAmt").val();
+            var type = $("#type").val();
+            i++;
+            var new_row = "<tr id='row" + i + "' class='info'><td class='minAmt'>" + minAmt + "</td><td class='maxAmt'>" + maxAmt + "</td><td class='type'>" + type + "</td><td><span class='editrow'><a class='fa fa-edit' href='javascript: void(0);'>edit</a></span></td><td><span class='deleterow'><a class='glyphicon glyphicon-trash' href=''>delete</a></span></tr>";
+            if (currentRow) {
+    
+                $("table tbody").find($(currentRow)).replaceWith(new_row);
+                currentRow = null;
+            }
+            else {
+                $("table tbody").append(new_row);
+            }
+            $("#minAmt").val($('td.maxAmt').last().text());
+            $("#maxAmt").val('');
+            //$("#type").val('');
+        });
+    
+        $(document).on('click', 'span.deleterow', function () {
+            $(this).parents('tr').remove();
+            return false;
+        });
+        $(document).on('click', 'span.editrow', function () {
+            currentRow = $(this).parents('tr'); $("#minAmt").val($(this).closest('tr').find('td.minAmt').text());
+            $("#maxAmt").val($(this).closest('tr').find('td.maxAmt').text());
+            $("#type").val($(this).closest('tr').find('td.type').text());
+        });
+    </script>
+    
+</body>
+
+</html>

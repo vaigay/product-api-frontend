@@ -21,10 +21,9 @@
     <div class="container">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <ul class="navbar-nav">
-                <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item active"><a class="nav-link" href="/">Product</a></li>
-                <li class="nav-item active"><a class="nav-link" href="#">Order</a>
-                </li>
+                <li class="nav-item active"><a class="nav-link" href="product.html">Product</a></li>
+                <li class="nav-item active"><a class="nav-link" href="user.html">User</a></li>
+                <li class="nav-item active"><a class="nav-link" href="bill.html">Bill</a></li>
             </ul>
         </nav>
     </div>
@@ -58,6 +57,10 @@
                                 <label class="col-form-label">Price:</label>
                                 <input type="number" class="form-control" id="price">
                             </div>
+                            <div class="form-group col-md-12">
+                                <label class="col-form-label">Description:</label>
+                                <textarea type="text" class="form-control" id="description"></textarea>
+                            </div>
                             <div class="form-group col-md-6">
                                 <label class="col-form-label">Image:</label>
                                 <input type="file" name="image" accept="image/png, image/jpeg" id="image">
@@ -68,11 +71,14 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="hidden" id="product_id" />
+                            <input type="hidden" id="imageURL" />
+                            <input type="hidden" id="operation" />
+                            <input type="hidden" id="idProduct" />
                             <button class="btn btn-secondary" type="button" data-dismiss="modal"
                                 id="close_form">Cancel</button>
                             <input type="button" class="btn btn-success" name="submit" id="save" value="Save" />
                         </div>
+                        
                     </form>
                 </div>
             </div>
@@ -98,7 +104,7 @@
         </table>
 
     </div>
-    <script type="text/javascript" src="js/product.js">
+    <script type="text/javascript" src="../js/product.js">
     </script>
 </body>
 
