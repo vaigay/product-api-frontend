@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Product Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <form id="loginForm">
+            <table>
+                <tr>
+                    <div class="form-group">
+                        <td><label for="exampleInputPassword1">Name:</label></td>
+                        <td><input id="name" type="text" id="name" placeholder="Name"></td>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="form-group">
+                        <td><label for="exampleInputEmail1">Username: </label></td>
+                        <td><input id="username" type="text" aria-describedby="emailHelp" placeholder="Username"></td>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="form-group">
+                        <td><label for="exampleInputPassword1">Phone Number:</label></td>
+                        <td><input id="phoneNumber" type="number" id="exampleInputPassword1" placeholder="Phone number"></td>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="form-group">
+                        <td><label for="exampleInputPassword1">Password:</label></td>
+                        <td><input id="password" type="password" id="exampleInputPassword1" placeholder="Password"></td>
+                    </div>
+                </tr>
+                <tr>
+                    <div class="form-group">
+                        <td><label for="exampleInputPassword1">Confirm Password:</label></td>
+                        <td><input id="confirm_password" type="password" id="exampleInputPassword1"
+                                placeholder="Password"></td>
+                    </div>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <button id="register" type="button" class="btn btn-primary">register</button>
+                        </div>
+                    </td>
+                    <td><a href="login.html">Login</a></td>
+                </tr>
+            </table>
+        </form>
+
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#register').click(function () {
+                if($("#name").val() == "" || $("#username").val() == "" || $("#password").val() == "" ){
+                    alert("Please fill all!");
+                    return false;
+                }
+                if($("#password").val() != $("#confirm_password").val()){
+                    alert("Confirm password is not correst!");
+                    return false;
+                }
+                var user = new Object();
+                user.name = $("#name").val();
+                user.username = $("#username").val();
+                user.password = $("#password").val();
+                user.phoneNumber = $("#phoneNumber").val();
+                console.log(JSON.stringify(user));
+
+                $.ajax({
+                    url: "http://localhost:8080/register",
+                    method: 'POST',
+                    data: JSON.stringify(user),
+                    contentType: "application/json",
+                    success: function (data) {
+                        localStorage.setItem('token', "Bearer " + data);
+                        window.location.href = "login.html";
+                    },
+                    error: function () {
+                        alert("sai tài khoản hoặc mật khẩu");
+                    }
+                })
+            })
+
+        });
+    </script>
+</body>
+
+</html>

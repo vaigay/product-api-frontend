@@ -25,7 +25,7 @@ $(document).ready(function () {
         product.description = $("#description").val();
 
         console.log(JSON.stringify(product));
-
+        console.log($('#operation').val());
         formData.append("name", product.name);
         formData.append("brand", product.brand);
         formData.append("price", product.price);
@@ -36,7 +36,7 @@ $(document).ready(function () {
         else
             formData.append("image", null);
         var url = "http://localhost:8080/product"
-        if($('operation').val() == 'add'){
+        if($('#operation').val() == 'add'){
             $.ajax({
                 url: "http://localhost:8080/product",
                 method: 'POST',
@@ -146,6 +146,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 console.log(data);
+                $('#info')[0].reset();
                 $('#operation').val('update');
                 $('#newProduct').modal('show');
                 console.log("123");

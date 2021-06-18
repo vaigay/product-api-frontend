@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function loadUser() {
         $.ajax({
-            url: "http://localhost:8080/users",
+            url: "http://localhost:8080/admin/users",
             method: 'GET',
             dataType: 'json',
             headers: {
@@ -29,7 +29,7 @@ $(document).ready(function () {
         row += '<td>' + user.name + '</td>';
         row += '<td>' + user.username + '</td>';
         row += '<td>' + user.phoneNumber + '</td>';
-        row += '<td><button value = "' + user.id + '"type="button" class="btn btn-warning view_user">View</button></td>';
+        row += '<td><button value = "' + user.id + '"type="button" class="btn btn-info view_user">View</button></td>';
         return row;
     }
 
